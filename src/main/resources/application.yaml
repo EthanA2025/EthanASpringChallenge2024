@@ -1,4 +1,4 @@
 spring:
   data:
     mongodb:
-      uri: mongodb+srv://username:password@pyx-interview-cluster0.2zo55.mongodb.net/interview?ssl=true&retryWrites=true&w=majority&authMechanism=SCRAM-SHA-1
+      uri: mongodb+srv://onboarding:onboarding@pyx-se-onboarding.zahdc0c.mongodb.net/movies
