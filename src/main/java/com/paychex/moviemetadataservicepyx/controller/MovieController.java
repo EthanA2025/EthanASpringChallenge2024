@@ -1,16 +1,15 @@
 package com.paychex.moviemetadataservicepyx.controller;
 
 
+import com.paychex.moviemetadataservicepyx.handling.ApiRequestException;
 import com.paychex.moviemetadataservicepyx.model.Movie;
 import com.paychex.moviemetadataservicepyx.repository.MovieRepository;
 import com.paychex.moviemetadataservicepyx.utility.TitleCaseConverter;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.mongodb.core.mapping.Document;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.Collection;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -50,6 +49,10 @@ public class MovieController {
     @GetMapping("/movies/title/{title}")
     public List<Movie> getMoviesByTitle(@PathVariable String title) {
         List<Movie> movies = movieRepository.findMoviesByTitle(title);
+        if(movies.isEmpty()) {
+            String message = "Title of movie: " + title + " was not found";
+            throw new ApiRequestException(message);
+        }
         return movies.stream()
                 .map(movie -> {
                     movie.setTitle(TitleCaseConverter.titleCase(movie.getTitle()));
@@ -65,6 +68,11 @@ public class MovieController {
      */
     @GetMapping("/movies/year/{year}")
     List<Movie> getMoviesByYear(@PathVariable int year) {
-        return movieRepository.findMoviesByYear(year);
+        List<Movie> movies = movieRepository.findMoviesByYear(year);
+        if (movies.isEmpty()) {
+            String message = "Year for movie of: " + year + " was not found";
+            throw new ApiRequestException(message);
+        }
+        return movies;
     }
 }
