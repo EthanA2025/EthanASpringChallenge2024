@@ -21,7 +21,6 @@ public class MovieController {
     @Autowired
     MovieService movieService;
 
-
     /**
      * Adds a new movie to the database
      * @param movie the request body for the new movie

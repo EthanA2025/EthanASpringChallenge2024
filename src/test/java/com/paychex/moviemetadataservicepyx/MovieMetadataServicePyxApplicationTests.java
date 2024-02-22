@@ -94,6 +94,20 @@ class MovieMetadataServicePyxApplicationTests {
 	}
 
 	@Test
+	void createBadRequestDecade() {
+		assertThrows(ApiRequestException.class, () -> {
+			controller.getMoviesByDecade(100000);
+		});
+	}
+
+	@Test
+	void createBadRequestCastMember() {
+		assertThrows(ApiRequestException.class, () -> {
+			controller.getMoviesByCastMember("Stewie Griffin");
+		});
+	}
+
+	@Test
 	void addMovie() {
 		Movie movie = new Movie("1", "title", 1000, new String[1], new String[1]);
 		assertEquals(movie, controller.addMovie(movie));

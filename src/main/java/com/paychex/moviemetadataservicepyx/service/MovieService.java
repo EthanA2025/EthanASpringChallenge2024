@@ -5,6 +5,9 @@ import org.springframework.stereotype.Service;
 
 import java.util.List;
 
+/**
+ * Interface that represents the service layer for movies
+ */
 public interface MovieService {
     public List<Movie> getAll();
     public List<Movie> getMoviesByTitle(String title);

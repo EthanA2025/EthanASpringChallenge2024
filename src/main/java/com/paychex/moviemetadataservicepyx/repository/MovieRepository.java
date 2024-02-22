@@ -7,7 +7,7 @@ import org.springframework.data.mongodb.repository.Query;
 import java.util.List;
 
 /**
- * Represents a Repository for Movies
+ * Represents a Repository for Movies and contains queries from the MongoDB
  */
 public interface MovieRepository extends MongoRepository<Movie, String> {
 

@@ -14,6 +14,9 @@ import java.util.stream.Collectors;
 
 import static org.bouncycastle.asn1.x500.style.RFC4519Style.member;
 
+/**
+ * Class that represents the implementation of the methods that will preform CRUD operations
+ */
 @Service
 public class MovieServiceImpl implements MovieService {
     MovieRepository movieRepository;
