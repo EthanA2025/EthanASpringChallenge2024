@@ -40,6 +40,9 @@ public class Movie {
         return this.year;
     }
 
+    public String[] getGenre() {return this.genre ;}
+    public String[] getCast() {return this.cast; }
+
     public void setTitle(String title) { this.title = title; }
 
     @Override

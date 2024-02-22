@@ -1,14 +1,14 @@
 package com.paychex.moviemetadataservicepyx;
 
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.CommandLineRunner;
+import com.paychex.moviemetadataservicepyx.repository.MovieRepository;
+import com.paychex.moviemetadataservicepyx.service.MovieService;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.data.mongodb.repository.config.EnableMongoRepositories;
 
 
 @SpringBootApplication
-@EnableMongoRepositories
+@EnableMongoRepositories(basePackageClasses = {MovieRepository.class, MovieService.class})
 public class MovieMetadataServicePyxApplication {
 
 

@@ -1,17 +1,14 @@
 package com.paychex.moviemetadataservicepyx.controller;
 
 
-import com.paychex.moviemetadataservicepyx.handling.ApiRequestException;
 import com.paychex.moviemetadataservicepyx.model.Movie;
-import com.paychex.moviemetadataservicepyx.repository.MovieRepository;
-import com.paychex.moviemetadataservicepyx.utility.TitleCaseConverter;
+import com.paychex.moviemetadataservicepyx.service.MovieService;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
-import java.util.stream.Collectors;
 
 /**
  * Represents the controller that deals with the HTTP requests given to the spring application
@@ -20,16 +17,19 @@ import java.util.stream.Collectors;
 public class MovieController {
 
     private final static Logger LOGGER = LogManager.getLogger(MovieController.class);
+
     @Autowired
-    MovieRepository movieRepository;
+    MovieService movieService;
+
 
     /**
      * Adds a new movie to the database
      * @param movie the request body for the new movie
+     * @return movie that was added
      */
     @PostMapping("/movies/addMovie")
-    public void addMovie(@RequestBody Movie movie) {
-        movieRepository.save(movie);
+    public Movie addMovie(@RequestBody Movie movie) {
+        return movieService.addMovie(movie);
     }
 
     /**
@@ -37,8 +37,8 @@ public class MovieController {
      * @return returns a response of all documents
      */
     @GetMapping("/movies/all")
-    List<Movie> getAllMovies() {
-        return movieRepository.findAll();
+    public List<Movie> getAllMovies() {
+        return movieService.getAll();
     }
 
     /**
@@ -48,17 +48,7 @@ public class MovieController {
      */
     @GetMapping("/movies/title/{title}")
     public List<Movie> getMoviesByTitle(@PathVariable String title) {
-        List<Movie> movies = movieRepository.findMoviesByTitle(title);
-        if(movies.isEmpty()) {
-            String message = "Title of movie: " + title + " was not found";
-            throw new ApiRequestException(message);
-        }
-        return movies.stream()
-                .map(movie -> {
-                    movie.setTitle(TitleCaseConverter.titleCase(movie.getTitle()));
-                    return movie;
-                })
-                .collect(Collectors.toList());
+        return movieService.getMoviesByTitle(title);
     }
 
     /**
@@ -67,12 +57,27 @@ public class MovieController {
      * @return All movies that fit the title criteria
      */
     @GetMapping("/movies/year/{year}")
-    List<Movie> getMoviesByYear(@PathVariable int year) {
-        List<Movie> movies = movieRepository.findMoviesByYear(year);
-        if (movies.isEmpty()) {
-            String message = "Year for movie of: " + year + " was not found";
-            throw new ApiRequestException(message);
-        }
-        return movies;
+    public List<Movie> getMoviesByYear(@PathVariable int year) {
+        return movieService.getMoviesByYear(year);
+    }
+
+    /**
+     * Finds all movies given the cast member of that movie
+     * @param member cast member of the movies
+     * @return All movies that fit the cast member criteria
+     */
+    @GetMapping("/movies/member/{member}")
+    public List<Movie> getMoviesByCastMember(@PathVariable String member) {
+        return movieService.getMovieByCastMember(member);
+    }
+
+    /**
+     * Finds all movies given a decade
+     * @param decadeLowerBound start of the decade for the movies
+     * @return All movies that fit from the decade starting point to 10 years after
+     */
+    @GetMapping("/movies/decade/{decadeLowerBound}")
+    public List<Movie> getMoviesByDecade(@PathVariable int decadeLowerBound) {
+        return movieService.getMoviesByDecade(decadeLowerBound);
     }
 }
