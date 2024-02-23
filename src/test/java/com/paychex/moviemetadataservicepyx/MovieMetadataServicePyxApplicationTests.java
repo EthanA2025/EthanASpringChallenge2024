@@ -43,10 +43,28 @@ class MovieMetadataServicePyxApplicationTests {
 	}
 
 	@Test
-	void ConvertToTitleCase() {
+	void convertToTitleCase() {
 		String before = "tHis wiLl BeCome title Case";
 		String converted = TitleCaseConverter.titleCase(before);
 		String expected = "This Will Become Title Case";
+
+		assertEquals(converted, expected);
+	}
+
+	@Test
+	void convertToTitleCaseNonAlphaString() {
+		String before = ("(how to train your dragon)");
+		String converted = TitleCaseConverter.titleCase(before);
+		String expected = ("(How To Train Your Dragon)");
+
+		assertEquals(converted, expected);
+	}
+
+	@Test
+	void convertToTitleCaseNonAlphaStringAndNumbers() {
+		String before = ("2. (2how to train your dragon)");
+		String converted = TitleCaseConverter.titleCase(before);
+		String expected = ("2. (2How To Train Your Dragon)");
 
 		assertEquals(converted, expected);
 	}
@@ -183,6 +201,5 @@ class MovieMetadataServicePyxApplicationTests {
 	void sendRequestInvalidMovieNotAdded() {
 		Movie invalidMovie = new Movie(null, null, 0, null, null);
 		assertThrows(Exception.class, () -> {controller.addMovie(invalidMovie);});
-
 	}
 }
