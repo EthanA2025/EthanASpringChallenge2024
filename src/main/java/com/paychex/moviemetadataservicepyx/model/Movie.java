@@ -1,20 +1,30 @@
 package com.paychex.moviemetadataservicepyx.model;
 
+import lombok.Getter;
+import lombok.Setter;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 
+import javax.validation.constraints.NotNull;
 import java.util.Arrays;
 
 /**
  * Represents a movie object and its associated data
  */
+@Getter
+@Setter
 @Document(collection = "movies")
 public class Movie {
     @Id
+    @NotNull
     public String id;
+    @NotNull
     public String title;
+    @NotNull
     public int year;
+    @NotNull
     public String[] genre;
+    @NotNull
     public String[] cast;
 
     public Movie() {}
@@ -27,23 +37,6 @@ public class Movie {
         this.genre = genre;
         this.cast = cast;
     }
-
-    public String getId() {
-        return this.id;
-    }
-
-    public String getTitle() {
-        return this.title;
-    }
-
-    public int getYear() {
-        return this.year;
-    }
-
-    public String[] getGenre() {return this.genre ;}
-    public String[] getCast() {return this.cast; }
-
-    public void setTitle(String title) { this.title = title; }
 
     @Override
     public String toString() {

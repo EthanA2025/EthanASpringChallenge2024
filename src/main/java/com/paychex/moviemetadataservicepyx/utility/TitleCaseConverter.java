@@ -11,4 +11,5 @@ public class TitleCaseConverter {
                 .map(word -> word.substring(0,1).toUpperCase() + word.substring(1).toLowerCase())
                 .collect(Collectors.joining(" "));
     }
+
 }

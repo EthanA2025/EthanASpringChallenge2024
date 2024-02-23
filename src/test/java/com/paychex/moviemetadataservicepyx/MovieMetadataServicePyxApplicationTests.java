@@ -1,13 +1,17 @@
 package com.paychex.moviemetadataservicepyx;
 
 import com.paychex.moviemetadataservicepyx.controller.MovieController;
+import com.paychex.moviemetadataservicepyx.dto.MovieDto;
 import com.paychex.moviemetadataservicepyx.handling.ApiRequestException;
+import com.paychex.moviemetadataservicepyx.mapping.MovieMapper;
 import com.paychex.moviemetadataservicepyx.model.Movie;
+import com.paychex.moviemetadataservicepyx.utility.DtoListConverter;
 import com.paychex.moviemetadataservicepyx.utility.TitleCaseConverter;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -17,6 +21,8 @@ class MovieMetadataServicePyxApplicationTests {
 
 	@Autowired
 	private MovieController controller;
+
+	private MovieMapper movieMapper;
 
 	@Test
 	void contextLoads() {
@@ -31,6 +37,7 @@ class MovieMetadataServicePyxApplicationTests {
 
 		assertEquals(movie.getId(), "100");
 		assertEquals(movie.getTitle(), "Space Jam");
+		assertEquals(movie.getYear(), 1996);
 		assertArrayEquals(movie.getCast(), new String[]{"LeBron James", "Bugs Bunny"});
 		assertArrayEquals(movie.getGenre(), new String[]{"Comedy", "Kids"});
 	}
@@ -45,8 +52,53 @@ class MovieMetadataServicePyxApplicationTests {
 	}
 
 	@Test
+	void convertMovieToMovieDto() {
+		Movie movie = new Movie("100", "Space Jam", 1996,
+				new String[]{"Comedy", "Kids"},
+				new String[]{"LeBron James", "Bugs Bunny"});
+		MovieDto movieDto = movieMapper.MAPPER.mapToMovieDto(movie);
+
+		assertEquals(movieDto.getId(), "100");
+		assertEquals(movieDto.getTitle(), "Space Jam");
+		assertEquals(movieDto.getYear(), 1996);
+		assertArrayEquals(movieDto.getCast(), new String[]{"LeBron James", "Bugs Bunny"});
+		assertArrayEquals(movieDto.getGenre(), new String[]{"Comedy", "Kids"});
+	}
+
+	@Test
+	void convertMovieListToMovieDtoList() {
+		Movie movie1 = new Movie("100", "Space Jam", 1996,
+				new String[]{"Comedy", "Kids"},
+				new String[]{"LeBron James", "Bugs Bunny"});
+
+		List<Movie> movies = new ArrayList<Movie>();
+		movies.add(movie1);
+		List<MovieDto> moviesDto = DtoListConverter.movieListToMovieDtoList(movies);
+
+		assertEquals(moviesDto.get(0).getId(), movies.get(0).getId());
+		assertEquals(moviesDto.get(0).getTitle(), movies.get(0).getTitle());
+		assertEquals(moviesDto.get(0).getYear(), movies.get(0).getYear());
+		assertArrayEquals(moviesDto.get(0).getGenre(), movies.get(0).getGenre());
+		assertArrayEquals(moviesDto.get(0).getCast(), movies.get(0).getCast());
+	}
+
+	@Test
+	void convertMovieDtoToMovie() {
+		MovieDto movieDto = new MovieDto("100", "Space Jam", 1996,
+				new String[]{"Comedy", "Kids"},
+				new String[]{"LeBron James", "Bugs Bunny"});
+		Movie movie = movieMapper.MAPPER.mapToMovie(movieDto);
+
+		assertEquals(movieDto.getId(), "100");
+		assertEquals(movieDto.getTitle(), "Space Jam");
+		assertEquals(movieDto.getYear(), 1996);
+		assertArrayEquals(movieDto.getCast(), new String[]{"LeBron James", "Bugs Bunny"});
+		assertArrayEquals(movieDto.getGenre(), new String[]{"Comedy", "Kids"});
+	}
+
+	@Test
 	void getMovieByTitle() {
-		List<Movie> movies = controller.getMoviesByTitle("How to Train Your Dragon");
+		List<MovieDto> movies = controller.getMoviesByTitle("How to Train Your Dragon");
 		String expected = "How To Train Your Dragon";
 		String actual = movies.get(0).getTitle();
 
@@ -55,15 +107,15 @@ class MovieMetadataServicePyxApplicationTests {
 
 	@Test
 	void getAllMovies() {
-		List<Movie> movies = controller.getAllMovies();
+		List<MovieDto> movies = controller.getAllMovies();
 
 		assertNotNull(movies);
-		assertInstanceOf(Movie.class, movies.get(0));
+		assertInstanceOf(MovieDto.class, movies.get(0));
 	}
 
 	@Test
 	void getMoviesByYear() {
-		List<Movie> movies = controller.getMoviesByYear(1999);
+		List<MovieDto> movies = controller.getMoviesByYear(1999);
 		int yearExpected = 1999;
 		int yearActual = movies.get(0).getYear();
 
@@ -72,7 +124,7 @@ class MovieMetadataServicePyxApplicationTests {
 
 	@Test
 	void getMoviesByCastMember() {
-		List<Movie> movies = controller.getMoviesByCastMember("Kevin Bowman");
+		List<MovieDto> movies = controller.getMoviesByCastMember("Kevin Bowman");
 		int numberOfMoviesExpected = 2;
 		int numberOfMoviesActual = movies.size();
 
@@ -116,15 +168,21 @@ class MovieMetadataServicePyxApplicationTests {
 	@Test
 	void getMovieByDecadeLowerBound() {
 		int decade = 2009;
-		List<Movie> movies = controller.getMoviesByDecade(decade);
+		List<MovieDto> movies = controller.getMoviesByDecade(decade);
 		assertEquals(movies.get(0).getYear(), decade);
 	}
 
 	@Test
 	void getMovieByDecadeUpperBound() {
 		int decade = 2009;
-		List<Movie> movies = controller.getMoviesByDecade(decade);
+		List<MovieDto> movies = controller.getMoviesByDecade(decade);
 		assertEquals(movies.get(movies.size()-1).getYear(), decade+10);
+	}
+
+	@Test
+	void sendRequestInvalidMovieNotAdded() {
+		Movie invalidMovie = new Movie(null, null, 0, null, null);
+		assertThrows(Exception.class, () -> {controller.addMovie(invalidMovie);});
 
 	}
 }

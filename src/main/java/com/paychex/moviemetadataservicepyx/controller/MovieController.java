@@ -6,14 +6,18 @@ import com.paychex.moviemetadataservicepyx.service.MovieService;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
+import com.paychex.moviemetadataservicepyx.dto.MovieDto;
 
+import javax.validation.Valid;
 import java.util.List;
 
 /**
  * Represents the controller that deals with the HTTP requests given to the spring application
  */
 @RestController
+@Validated
 public class MovieController {
 
     private final static Logger LOGGER = LogManager.getLogger(MovieController.class);
@@ -27,7 +31,7 @@ public class MovieController {
      * @return movie that was added
      */
     @PostMapping("/movies/addMovie")
-    public Movie addMovie(@RequestBody Movie movie) {
+    public Movie addMovie(@RequestBody @Valid Movie movie) {
         return movieService.addMovie(movie);
     }
 
@@ -36,7 +40,7 @@ public class MovieController {
      * @return returns a response of all documents
      */
     @GetMapping("/movies/all")
-    public List<Movie> getAllMovies() {
+    public List<MovieDto> getAllMovies() {
         return movieService.getAll();
     }
 
@@ -46,7 +50,7 @@ public class MovieController {
      * @return All movies that fit the title criteria
      */
     @GetMapping("/movies/title/{title}")
-    public List<Movie> getMoviesByTitle(@PathVariable String title) {
+    public List<MovieDto> getMoviesByTitle(@PathVariable String title) {
         return movieService.getMoviesByTitle(title);
     }
 
@@ -56,7 +60,7 @@ public class MovieController {
      * @return All movies that fit the title criteria
      */
     @GetMapping("/movies/year/{year}")
-    public List<Movie> getMoviesByYear(@PathVariable int year) {
+    public List<MovieDto> getMoviesByYear(@PathVariable int year) {
         return movieService.getMoviesByYear(year);
     }
 
@@ -66,7 +70,7 @@ public class MovieController {
      * @return All movies that fit the cast member criteria
      */
     @GetMapping("/movies/member/{member}")
-    public List<Movie> getMoviesByCastMember(@PathVariable String member) {
+    public List<MovieDto> getMoviesByCastMember(@PathVariable String member) {
         return movieService.getMovieByCastMember(member);
     }
 
@@ -76,7 +80,7 @@ public class MovieController {
      * @return All movies that fit from the decade starting point to 10 years after
      */
     @GetMapping("/movies/decade/{decadeLowerBound}")
-    public List<Movie> getMoviesByDecade(@PathVariable int decadeLowerBound) {
+    public List<MovieDto> getMoviesByDecade(@PathVariable int decadeLowerBound) {
         return movieService.getMoviesByDecade(decadeLowerBound);
     }
 }
