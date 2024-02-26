@@ -16,7 +16,6 @@ import java.util.Arrays;
 @Document(collection = "movies")
 public class Movie {
     @Id
-    @NotNull
     public String id;
     @NotNull
     public String title;

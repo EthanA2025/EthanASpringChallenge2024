@@ -17,7 +17,6 @@ import javax.validation.constraints.NotNull;
 @AllArgsConstructor
 public class MovieDto {
 
-    @NotNull
     public String id;
     @NotNull
     @NotBlank(message = "Title is required for a movie")
