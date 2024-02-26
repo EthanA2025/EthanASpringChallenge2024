@@ -25,6 +25,11 @@ public class MovieServiceImpl implements MovieService {
     public MovieServiceImpl(MovieRepository movieRepository) {
         this.movieRepository = movieRepository;
     }
+
+    /**
+     * Gets all the movies in the repository
+     * @return List of MovieDto objects for every document
+     */
     @Override
     public List<MovieDto> getAll() {
         List<Movie> movies = movieRepository.findAll();
@@ -32,6 +37,11 @@ public class MovieServiceImpl implements MovieService {
         return DtoListConverter.movieListToMovieDtoList(movies);
     }
 
+    /**
+     * Finds all movies given the title of that movie and converts to titlecase
+     * @param title title of movies
+     * @return All movies that fit the title criteria
+     */
     @Override
     public List<MovieDto> getMoviesByTitle(String title) {
         List<Movie> movies = movieRepository.findMoviesByTitle(title);
@@ -48,6 +58,11 @@ public class MovieServiceImpl implements MovieService {
                 .collect(Collectors.toList());
     }
 
+    /**
+     * Finds all movies given the year of that movie
+     * @param year year of the movies
+     * @return All movies that fit the title criteria
+     */
     @Override
     public List<MovieDto> getMoviesByYear(int year) {
         List<Movie> movies = movieRepository.findMoviesByYear(year);
@@ -58,6 +73,11 @@ public class MovieServiceImpl implements MovieService {
         return DtoListConverter.movieListToMovieDtoList(movies);
     }
 
+    /**
+     * Finds all movies given the cast member of that movie
+     * @param member cast member of the movies
+     * @return All movies that fit the cast member criteria
+     */
     @Override
     public List<MovieDto> getMovieByCastMember(String member) {
         List<Movie> movies = movieRepository.findMoviesByCastMember(member);
@@ -68,6 +88,11 @@ public class MovieServiceImpl implements MovieService {
         return DtoListConverter.movieListToMovieDtoList(movies);
     }
 
+    /**
+     * Finds all movies given a decade
+     * @param decadeLowerBound start of the decade for the movies
+     * @return All movies that fit from the decade starting point to 10 years after
+     */
     @Override
     public List<MovieDto> getMoviesByDecade(int decadeLowerBound) {
         int decadeUpperBound = decadeLowerBound+10;
@@ -79,6 +104,11 @@ public class MovieServiceImpl implements MovieService {
         return DtoListConverter.movieListToMovieDtoList(movies);
     }
 
+    /**
+     * Adds a new movie to the database
+     * @param movie the request body for the new movie
+     * @return movie that was added
+     */
     @Override
     public Movie addMovie(@Valid Movie movie) {
         try {
