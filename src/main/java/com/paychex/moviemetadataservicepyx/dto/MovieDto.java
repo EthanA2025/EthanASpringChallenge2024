@@ -23,13 +23,13 @@ public class MovieDto {
     @NotBlank(message = "Title is required for a movie")
     public String title;
     @NotNull
-    @NotBlank(message = "Title is required for a movie")
+    @NotBlank(message = "year is required for a movie")
     public int year;
     @NotNull
-    @NotBlank(message = "Title is required for a movie")
+    @NotBlank(message = "Genre is required for a movie")
     public String[] genre;
     @NotNull
-    @NotBlank(message = "Title is required for a movie")
+    @NotBlank(message = "Cast is required for a movie")
     public String[] cast;
 
 }
