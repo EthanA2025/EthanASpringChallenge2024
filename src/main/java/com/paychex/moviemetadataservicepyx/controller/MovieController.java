@@ -20,8 +20,6 @@ import java.util.List;
 @Validated
 public class MovieController {
 
-    private final static Logger LOGGER = LogManager.getLogger(MovieController.class);
-
     @Autowired
     MovieService movieService;
 
