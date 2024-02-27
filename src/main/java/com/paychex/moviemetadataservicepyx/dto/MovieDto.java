@@ -7,6 +7,7 @@ import lombok.Setter;
 
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
+import java.util.List;
 
 /**
  * Represents a movie Dto object
@@ -26,9 +27,9 @@ public class MovieDto {
     public int year;
     @NotNull
     @NotBlank(message = "Genre is required for a movie")
-    public String[] genre;
+    public List<String> genre;
     @NotNull
     @NotBlank(message = "Cast is required for a movie")
-    public String[] cast;
+    public List<String> cast;
 
 }

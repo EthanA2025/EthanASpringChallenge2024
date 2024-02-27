@@ -6,7 +6,7 @@ import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 
 import javax.validation.constraints.NotNull;
-import java.util.Arrays;
+import java.util.List;
 
 /**
  * Represents a movie object and its associated data
@@ -22,13 +22,13 @@ public class Movie {
     @NotNull
     public int year;
     @NotNull
-    public String[] genre;
+    public List<String> genre;
     @NotNull
-    public String[] cast;
+    public List<String> cast;
 
     public Movie() {}
 
-    public Movie(String id, String title, int year, String[] genre, String[] cast) {
+    public Movie(String id, String title, int year, List<String> genre, List<String> cast) {
         super();
         this.id = id;
         this.title = title;
@@ -41,6 +41,6 @@ public class Movie {
     public String toString() {
         return String.format(
                 "Movie[id='%s', title='%s', year='%d', genre(s)='%s', cast='%s']",
-                id, title, year, Arrays.toString(genre), Arrays.toString(cast));
+                id, title, year, genre, cast);
     }
 }

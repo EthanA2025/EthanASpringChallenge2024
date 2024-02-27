@@ -12,6 +12,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -31,15 +32,15 @@ class MovieMetadataServicePyxApplicationTests {
 
 	@Test
 	void createMovieConstructor() {
-		Movie movie = new Movie("100", "Space Jam", 1996,
-				new String[]{"Comedy", "Kids"},
-				new String[]{"LeBron James", "Bugs Bunny"});
+		List<String> genres = Arrays.asList("Comedy", "Kids");
+		List<String> cast = Arrays.asList("LeBron James", "Bugs Bunny");
+		Movie movie = new Movie("100", "Space Jam", 1996, genres, cast);
 
 		assertEquals(movie.getId(), "100");
 		assertEquals(movie.getTitle(), "Space Jam");
 		assertEquals(movie.getYear(), 1996);
-		assertArrayEquals(movie.getCast(), new String[]{"LeBron James", "Bugs Bunny"});
-		assertArrayEquals(movie.getGenre(), new String[]{"Comedy", "Kids"});
+		assertEquals(movie.getGenre(), Arrays.asList("Comedy", "Kids"));
+		assertEquals(movie.getCast(), Arrays.asList("LeBron James", "Bugs Bunny"));
 	}
 
 	@Test
@@ -71,47 +72,48 @@ class MovieMetadataServicePyxApplicationTests {
 
 	@Test
 	void convertMovieToMovieDto() {
-		Movie movie = new Movie("100", "Space Jam", 1996,
-				new String[]{"Comedy", "Kids"},
-				new String[]{"LeBron James", "Bugs Bunny"});
+		List<String> genres = Arrays.asList("Comedy", "Kids");
+		List<String> cast = Arrays.asList("LeBron James", "Bugs Bunny");
+		Movie movie = new Movie("100", "Space Jam", 1996, genres, cast);
 		MovieDto movieDto = movieMapper.MAPPER.mapToMovieDto(movie);
 
 		assertEquals(movieDto.getId(), "100");
 		assertEquals(movieDto.getTitle(), "Space Jam");
 		assertEquals(movieDto.getYear(), 1996);
-		assertArrayEquals(movieDto.getCast(), new String[]{"LeBron James", "Bugs Bunny"});
-		assertArrayEquals(movieDto.getGenre(), new String[]{"Comedy", "Kids"});
+		assertEquals(movieDto.getCast(), Arrays.asList("LeBron James", "Bugs Bunny"));
+		assertEquals(movieDto.getGenre(), Arrays.asList("Comedy", "Kids"));
 	}
 
 	@Test
 	void convertMovieListToMovieDtoList() {
-		Movie movie1 = new Movie("100", "Space Jam", 1996,
-				new String[]{"Comedy", "Kids"},
-				new String[]{"LeBron James", "Bugs Bunny"});
+		List<String> genres = Arrays.asList("Comedy", "Kids");
+		List<String> cast = Arrays.asList("LeBron James", "Bugs Bunny");
+		Movie movie1 = new Movie("100", "Space Jam", 1996, genres, cast);
 
-		List<Movie> movies = new ArrayList<Movie>();
+		List<Movie> movies = new ArrayList<>();
 		movies.add(movie1);
 		List<MovieDto> moviesDto = DtoListConverter.movieListToMovieDtoList(movies);
 
 		assertEquals(moviesDto.get(0).getId(), movies.get(0).getId());
 		assertEquals(moviesDto.get(0).getTitle(), movies.get(0).getTitle());
 		assertEquals(moviesDto.get(0).getYear(), movies.get(0).getYear());
-		assertArrayEquals(moviesDto.get(0).getGenre(), movies.get(0).getGenre());
-		assertArrayEquals(moviesDto.get(0).getCast(), movies.get(0).getCast());
+		assertEquals(moviesDto.get(0).getGenre(), movies.get(0).getGenre());
+		assertEquals(moviesDto.get(0).getCast(), movies.get(0).getCast());
 	}
 
 	@Test
 	void convertMovieDtoToMovie() {
-		MovieDto movieDto = new MovieDto("100", "Space Jam", 1996,
-				new String[]{"Comedy", "Kids"},
-				new String[]{"LeBron James", "Bugs Bunny"});
+		List<String> genres = Arrays.asList("Comedy", "Kids");
+		List<String> cast = Arrays.asList("LeBron James", "Bugs Bunny");
+		MovieDto movieDto = new MovieDto("100", "Space Jam", 1996, genres, cast);
+
 		Movie movie = movieMapper.MAPPER.mapToMovie(movieDto);
 
-		assertEquals(movieDto.getId(), "100");
-		assertEquals(movieDto.getTitle(), "Space Jam");
-		assertEquals(movieDto.getYear(), 1996);
-		assertArrayEquals(movieDto.getCast(), new String[]{"LeBron James", "Bugs Bunny"});
-		assertArrayEquals(movieDto.getGenre(), new String[]{"Comedy", "Kids"});
+		assertEquals(movieDto.getId(), movie.getId());
+		assertEquals(movieDto.getTitle(), movie.getTitle());
+		assertEquals(movieDto.getYear(), movie.getYear());
+		assertEquals(movieDto.getCast(), movie.getCast());
+		assertEquals(movieDto.getGenre(), movie.getGenre());
 	}
 
 	@Test
@@ -179,7 +181,7 @@ class MovieMetadataServicePyxApplicationTests {
 
 	@Test
 	void addMovie() {
-		Movie movie = new Movie("1", "title", 1000, new String[1], new String[1]);
+		Movie movie = new Movie("1", "title", 1000, new ArrayList<>(), new ArrayList<>());
 		assertEquals(movie, controller.addMovie(movie));
 	}
 
