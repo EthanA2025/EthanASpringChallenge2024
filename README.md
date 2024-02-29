@@ -15,8 +15,8 @@ The Movie API is a Spring Boot application that can be used to search for movies
 
 ### Api Endpoints
  1. The API endpoints are these:
-	2. /movies/all – returns a list of all movies in the database
-	3. /movies/title/{title} – returns all movies with the title: {title}
-	4. /movies/year/{year} – returns all movies released during the year: {year}
-	5. /movies/decade/{decadeLowerBound} – returns all movies in a 10-year period starting with {decadeLowerBound)
-	6. /movies/member/{member} – returns all movies that have a specific cast member 
+ 2. /movies/all – returns a list of all movies in the database
+ 3. /movies/title/{title} – returns all movies with the title: {title}
+ 4. /movies/year/{year} – returns all movies released during the year: {year}
+ 5. /movies/decade/{decadeLowerBound} – returns all movies in a 10-year period starting with {decadeLowerBound)
+ 6. /movies/member/{member} – returns all movies that have a specific cast member 
