@@ -27,6 +27,7 @@ The Movie API is a Spring Boot application that can be used to search for movies
 
 ### Runtime
 Happy Path
+
 Example: Get all movies
 This represents the happy path for the project given a HTTP request. First the client will send the request to the Spring Boot application. Then that request will be processed, in this case the request would be a GET and would have /movies/all. This request is mapped to the getAllMovies() method. The controller will request all documents from the service. This MovieService object will connect to the MongoDB and get the data back as a list of movie objects. This is then seen in the HTTP response where the user can see all the objects returned from the database. 
 
